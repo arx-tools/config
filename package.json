@@ -1,0 +1,61 @@
+{
+  "name": "@arx-tools/config",
+  "version": "0.1.0",
+  "description": "The shared development tooling of the arx-tools libraries: the xo and prettier configuration, the tsconfig base and the test runner",
+  "type": "module",
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=22.18.0"
+  },
+  "main": "dist/xo.js",
+  "types": "dist/xo.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/xo.js",
+      "types": "./dist/xo.d.ts"
+    },
+    "./prettier": "./prettier.json",
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./test-runner": {
+      "default": "./dist/run-tests.js",
+      "types": "./dist/run-tests.d.ts"
+    },
+    "./rewrite-declaration-imports": {
+      "default": "./dist/rewrite-declaration-imports.js",
+      "types": "./dist/rewrite-declaration-imports.d.ts"
+    }
+  },
+  "bin": {
+    "arx-lib-test": "dist/run-tests.js"
+  },
+  "files": [
+    "dist",
+    "prettier.json",
+    "tsconfig.base.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.src.json && node dist/rewrite-declaration-imports.js && chmod +x dist/run-tests.js dist/rewrite-declaration-imports.js",
+    "lint": "rm -f xo.config.mjs && xo --ignore 'xo.config.mjs'",
+    "test": "node dist/run-tests.js",
+    "typecheck": "tsc -p tsconfig.src.json --noEmit && tsc -p tsconfig.tests.json && tsc -p tsconfig.scripts.json && tsc -p tsconfig.json",
+    "prepublishOnly": "npm run lint && npm run typecheck && rm -rf dist && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arx-tools/config.git"
+  },
+  "author": "Lajos Meszaros <m_lajos@hotmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arx-tools/config/issues"
+  },
+  "devDependencies": {
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "@types/node": "^22.20.5",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "pre-commit": "^2.0.0",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "xo": "^5.0.1"
+  },
+  "pre-commit": {}
+}
