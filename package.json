@@ -23,10 +23,15 @@
     "./rewrite-declaration-imports": {
       "default": "./dist/rewrite-declaration-imports.js",
       "types": "./dist/rewrite-declaration-imports.d.ts"
+    },
+    "./formatDuration": {
+      "default": "./dist/formatDuration.js",
+      "types": "./dist/formatDuration.d.ts"
     }
   },
   "bin": {
-    "arx-lib-test": "dist/run-tests.js"
+    "arx-lib-test": "dist/run-tests.js",
+    "arx-lib-rewrite-declaration-imports": "dist/rewrite-declaration-imports.js"
   },
   "files": [
     "dist",
@@ -57,5 +62,8 @@
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "xo": "^5.0.1"
   },
-  "pre-commit": {}
+  "pre-commit": {},
+  "peerDependencies": {
+    "xo": "^5.0.1"
+  }
 }
