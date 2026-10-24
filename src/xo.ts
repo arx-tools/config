@@ -1,6 +1,6 @@
 import * as process from 'node:process'
 import unusedImports from 'eslint-plugin-unused-imports'
-import type { FlatXoConfig, XoConfigItem } from 'xo'
+import type { XoConfigItem } from 'xo'
 
 /**
  * The options of {@link createXoConfig}.
@@ -33,7 +33,6 @@ export const rules = {
   '@typescript-eslint/no-extraneous-class': 'off',
   'unicorn/filename-case': 'off',
   'unicorn/no-array-callback-reference': 'off',
-  'unicorn/no-array-for-each': 'off',
   'unicorn/no-static-only-class': 'off',
   'unicorn/prefer-math-trunc': 'off',
   'unicorn/prefer-module': 'off',
@@ -63,6 +62,13 @@ export const rules = {
   'logical-assignment-operators': ['error', 'never'],
   '@typescript-eslint/no-inferrable-types': ['error', { ignoreParameters: true, ignoreProperties: true }],
   '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
+  // the codebase works with a lot of fractional numbers (the float32 values of the formats), so the
+  // fractions are grouped in threes as well. the integers are left alone below five digits (2800
+  // stays 2800), so the coordinate tables of the formats keep their alignment
+  'unicorn/numeric-separators-style': [
+    'error',
+    { number: { fractionGroupLength: 3, groupLength: 3, minimumDigits: 5 } },
+  ],
   'unicorn/prefer-ternary': 'off',
   'no-ternary': 'error',
   'no-await-in-loop': 'off',
@@ -172,7 +178,7 @@ export const rules = {
  * @param options The folders and the typescript projects, see {@link XoConfigOptions}.
  * @returns The flat configuration array for `xo.config.ts`.
  */
-export function createXoConfig(options: XoConfigOptions = {}): FlatXoConfig {
+export function createXoConfig(options: XoConfigOptions = {}): XoConfigItem[] {
   const rootDir = options.rootDir ?? process.cwd()
   const sourceProject = options.sourceProject ?? './tsconfig.src.json'
   const testProject = options.testProject ?? './tsconfig.tests.json'
